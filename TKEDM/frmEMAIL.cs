@@ -18,6 +18,7 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Text;
 using System.Net.Mail;//<-基本上發mail就用這個class
+using System.Net;
 
 namespace TKEDM
 {
@@ -50,19 +51,32 @@ namespace TKEDM
         {
             try
             {
-                SmtpClient sc = new SmtpClient("mail.tkfood.com.tw");//<-宣告的時候可以先給主機名稱~記住喔~這是發送端的主機名稱~
-                sc.Port = 25;
-                MailAddress receiverAddress = new MailAddress("tk290@tkfood.com.tw", "t1");//<-這物件只是用來設定郵件帳號而已~
-                MailAddress senderAddress = new MailAddress("aurora@tkfood.com.tw", "1");
+
+                MailAddress receiverAddress = new MailAddress("tk160115@gmail.com", "hi");//<-這物件只是用來設定郵件帳號而已~
+                //MailAddress receiverAddress = new MailAddress("tk290@tkfood.com.tw", "t1");//<-這物件只是用來設定郵件帳號而已~
+                MailAddress senderAddress = new MailAddress("aurora@tkfood.com.tw", "老楊食品");               
                 MailMessage mail = new MailMessage(senderAddress, receiverAddress);//<-這物件是郵件訊息的部分~需設定寄件人跟收件人~可直接打郵件帳號也可以使用MailAddress物件~
-                mail.Subject = "test";
-                mail.Body = "<a href='http://tw.yahoo.com'>yahoo</a>";
+
+                mail.Priority = MailPriority.Normal;
+                mail.Subject = "老楊食品";
+                mail.Body = "<a href=http://new.tkfood.com.tw/'>老楊食品</a>";
                 mail.IsBodyHtml = true;//<-如果要這封郵件吃html的話~這屬性就把他設為true~~
 
                 //Attachment attachment = new Attachment(@"");//<-這是附件部分~先用附件的物件把路徑指定進去~
                 //mail.Attachments.Add(attachment);//<-郵件訊息中加入附件
+             
 
-                sc.Send(mail);//<-這樣就送出去拉~
+
+                SmtpClient MySmtp = new SmtpClient("mail.tkfood.com.tw", 25); //允許程式使用smtp來發mail，並設定smtp server & port
+                MySmtp.EnableSsl = false; //開啟SSL連線 (gmail體系須使用SSL連線)
+                MySmtp.UseDefaultCredentials = true;
+                MySmtp.Credentials = new NetworkCredential("aurora@tkfood.com.tw", "@@Tkmailar327"); //設定帳號與密碼 需要using system.net;
+                
+               
+                MySmtp.Send(mail);
+
+                MySmtp = null; //將MySmtp清空
+                mail.Dispose(); //釋放資源
 
                 MessageBox.Show("OK");
             }
@@ -72,8 +86,8 @@ namespace TKEDM
             }
             Console.ReadLine();
         }
-    
 
+      
 
         #endregion
 
