@@ -42,24 +42,25 @@ namespace TKEDM
         string tablename = null;
 
         Thread TD;
+        StringBuilder content = new StringBuilder();
 
         public frmEMAIL()
         {
             InitializeComponent();
+            SETBODY();
         }
         #region FUNCTION
         public void SENDEMAIL()
         {
-            StringBuilder content = new StringBuilder();
+            
             try
             {
                 //content.AppendFormat("<a href=http://new.tkfood.com.tw/'>老楊食品</a>");
                 //content.AppendFormat(" ");
                 //content.AppendFormat("嚴選材料、巧勁揉製麵糰、烘焙製作出上百層次、讓人念念不忘的酥香滋味,顛覆傳統將綿密的酥香的鹹蛋黃均勻的加入餅皮內,每一口餅都散發出濃濃蛋黃的口感~您絕對要體驗這驚奇的口感!讓你一口接一口");
                 //content.AppendFormat(" ");
-        
-                content.AppendFormat(" <div>Hello You're from country.</div>");
-                content.AppendFormat("<a href=http://new.tkfood.com.tw/'>老楊食品</a>");
+
+                content.AppendFormat(textBox1.Text);
 
                 MailAddress receiverAddress = new MailAddress("tk160115@gmail.com", "hi");//<-這物件只是用來設定郵件帳號而已~
                 //MailAddress receiverAddress = new MailAddress("tk290@tkfood.com.tw", "t1");//<-這物件只是用來設定郵件帳號而已~
@@ -96,17 +97,31 @@ namespace TKEDM
             Console.ReadLine();
         }
 
-      
+        public void SETBODY()
+        {
+            textBox1.Text = "<div>Hello You.</div>" + Environment.NewLine;
+            textBox1.Text = textBox1.Text + "<a href=http://new.tkfood.com.tw>老楊食品</a>" + Environment.NewLine;
+            textBox1.Text = textBox1.Text + "<br>" + Environment.NewLine;
+        }
+
 
         #endregion
 
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-        SENDEMAIL();
+            SENDEMAIL();
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //content.AppendFormat(" <div>Hello You're from country.</div>");
+            //content.AppendFormat("<a href=http://new.tkfood.com.tw'>老楊食品</a>");
 
+            content.AppendFormat(textBox1.Text);
+            webBrowser1.DocumentText= content.ToString();
+        }
         #endregion
+
 
     }
 }
