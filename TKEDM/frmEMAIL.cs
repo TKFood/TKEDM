@@ -55,11 +55,8 @@ namespace TKEDM
             
             try
             {
-                //content.AppendFormat("<a href=http://new.tkfood.com.tw/'>老楊食品</a>");
-                //content.AppendFormat(" ");
-                //content.AppendFormat("嚴選材料、巧勁揉製麵糰、烘焙製作出上百層次、讓人念念不忘的酥香滋味,顛覆傳統將綿密的酥香的鹹蛋黃均勻的加入餅皮內,每一口餅都散發出濃濃蛋黃的口感~您絕對要體驗這驚奇的口感!讓你一口接一口");
-                //content.AppendFormat(" ");
 
+                content.Clear();
                 content.AppendFormat(textBox1.Text);
 
                 MailAddress receiverAddress = new MailAddress("tk160115@gmail.com", "hi");//<-這物件只是用來設定郵件帳號而已~
@@ -116,7 +113,7 @@ namespace TKEDM
         {
             //content.AppendFormat(" <div>Hello You're from country.</div>");
             //content.AppendFormat("<a href=http://new.tkfood.com.tw'>老楊食品</a>");
-
+            content.Clear();
             content.AppendFormat(textBox1.Text);
             webBrowser1.DocumentText= content.ToString();
         }
