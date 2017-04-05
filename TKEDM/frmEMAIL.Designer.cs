@@ -86,7 +86,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel2);
             this.splitContainer1.Size = new System.Drawing.Size(970, 693);
-            this.splitContainer1.SplitterDistance = 110;
+            this.splitContainer1.SplitterDistance = 123;
             this.splitContainer1.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -112,7 +112,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(966, 106);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(966, 119);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // button1
@@ -140,7 +140,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(966, 575);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(966, 562);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // textBox1
@@ -149,7 +149,7 @@
             this.textBox1.Location = new System.Drawing.Point(3, 3);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(766, 281);
+            this.textBox1.Size = new System.Drawing.Size(766, 275);
             this.textBox1.TabIndex = 0;
             // 
             // tabPage2
@@ -176,10 +176,10 @@
             // webBrowser1
             // 
             this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(3, 290);
+            this.webBrowser1.Location = new System.Drawing.Point(3, 284);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(766, 282);
+            this.webBrowser1.Size = new System.Drawing.Size(766, 275);
             this.webBrowser1.TabIndex = 4;
             // 
             // frmEMAIL
