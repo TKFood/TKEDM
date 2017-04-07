@@ -96,10 +96,15 @@ namespace TKEDM
 
         public void SETBODY()
         {
-            textBox1.Text = "<img src=http://www.google-analytics.com/collect?v=1&tid=UA-92879762-1&cid=0001&t=event&ec=email&ea=open&el=recipient_id&cs=newsletter&cm=email&cn=TK201704>" + Environment.NewLine;
-            textBox1.Text = "<div>Hello You.</div>" + Environment.NewLine;
+            //textBox1.Text = "<img src=http://www.google-analytics.com/collect?v=1&t=event&tid=UA-92879762-1&cid=0001&ec=email&ea=open&el=recipient_id&cs=opennewsletter&cm=email&cn=TK201704>" + Environment.NewLine;
+            textBox1.Text = "<html>" + Environment.NewLine;
+            textBox1.Text = textBox1.Text + "<body>" + Environment.NewLine;
+            textBox1.Text = textBox1.Text + "<div>Hello You." + Environment.NewLine;
+            textBox1.Text = textBox1.Text + @"<img src=""http://www.google-analytics.com/collect?v=1&t=event&tid=UA-92879762-1&cid=0001&ec=email&ea=open3&el=recipient_id&cs=opennewsletter3&cm=email&cn=TK201704/>""/>" + Environment.NewLine;
             textBox1.Text = textBox1.Text + "<a href=http://new.tkfood.com.tw>老楊食品</a>" + Environment.NewLine;
-            textBox1.Text = textBox1.Text + "<br>" + Environment.NewLine;
+            textBox1.Text = textBox1.Text + "</div><br>" + Environment.NewLine;
+            textBox1.Text = textBox1.Text + "</body>" + Environment.NewLine;
+            textBox1.Text = textBox1.Text + "</html>" + Environment.NewLine;
         }
 
 
@@ -114,9 +119,15 @@ namespace TKEDM
         {
             //content.AppendFormat(" <div>Hello You're from country.</div>");
             //content.AppendFormat("<a href=http://new.tkfood.com.tw'>老楊食品</a>");
+
+            //string htmlBody = @"<img src=""http://www.google-analytics.com/collect?v=1&t=event&tid=UA-92879762-1&cid=0001&ec=email&ea=open&el=recipient_id&cs=opennewsletter&cm=email&cn=TK201704/>""/>";
+            //string htmlBody = @" < html><body><img src=""http://www.google-analytics.com/collect?v=1&t=event&tid=UA-92879762-1&cid=0001&ec=email&ea=open&el=recipient_id&cs=opennewsletter&cm=email&cn=TK201704/>""/></body></html>";
             content.Clear();
+            //content.AppendFormat("<img src=http://www.google-analytics.com/collect?v=1&t=event&tid=UA-92879762-1&cid=0001&ec=email&ea=open&el=recipient_id&cs=opennewsletter&cm=email&cn=TK201704/>");
+            //content.AppendFormat(htmlBody.ToString());
             content.AppendFormat(textBox1.Text);
             webBrowser1.DocumentText= content.ToString();
+            
         }
         #endregion
 
