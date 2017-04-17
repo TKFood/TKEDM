@@ -50,11 +50,22 @@ namespace TKEDM
         int SMTPPORT;
         string PASSWORD;
 
+        string GAID;
+        string GAEA;
+        string GACS;
+        string GACN;
+
         public frmEMAIL()
         {
             InitializeComponent();
+            
+
+            SERACHCONFIG();
+            SERACHGACONFIG();
+
             SETBODY();
         }
+
         #region FUNCTION
         public void SERACHCONFIG()
         {
@@ -94,6 +105,59 @@ namespace TKEDM
                         SMTPPORT = Convert.ToInt16(ds1.Tables["TEMPds1"].Rows[0]["SMTPPORT"].ToString());
                         PASSWORD = ds1.Tables["TEMPds1"].Rows[0]["PASSWORD"].ToString();
 
+                    }
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+        public void SERACHGACONFIG()
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"  SELECT TOP 1 [GAID],[GAEA],[GACS],[GACN]  FROM [TKEDM].[dbo].[GACONFIG]  ");
+                sbSql.AppendFormat(@"  ");
+
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds2.Clear();
+                adapter.Fill(ds2, "TEMPds2");
+                sqlConn.Close();
+
+
+                if (ds2.Tables["TEMPds2"].Rows.Count == 0)
+                {
+
+                }
+                else
+                {
+                    if (ds2.Tables["TEMPds2"].Rows.Count >= 1)
+                    {
+                        //GAID = ds2.Tables["TEMPds2"].Rows[0]["GAID"].ToString();
+                        //GAEA = ds2.Tables["TEMPds2"].Rows[0]["GAEA"].ToString();
+                        //GACS = ds2.Tables["TEMPds2"].Rows[0]["GACS"].ToString();
+                        //GACN = ds2.Tables["TEMPds2"].Rows[0]["GACN"].ToString();
+                        textBox2.Text = ds2.Tables["TEMPds2"].Rows[0]["GAID"].ToString();
+                        textBox3.Text = ds2.Tables["TEMPds2"].Rows[0]["GAEA"].ToString();
+                        textBox4.Text = ds2.Tables["TEMPds2"].Rows[0]["GACS"].ToString();
+                        textBox5.Text = ds2.Tables["TEMPds2"].Rows[0]["GACN"].ToString();
                     }
                 }
 
@@ -158,35 +222,49 @@ namespace TKEDM
             textBox1.Text = "<html>" + Environment.NewLine;
             textBox1.Text = textBox1.Text + "<body>" + Environment.NewLine;
             textBox1.Text = textBox1.Text + "<div>Hello You." + Environment.NewLine;
-            textBox1.Text = textBox1.Text + @"<img src=""http://www.google-analytics.com/collect?v=1&t=event&tid=UA-92879762-1&cid=0001&ec=email&ea=open5&el=recipient_id&cs=opennewsletter5&cm=email&cn=TK201704/>""/>" + Environment.NewLine;
+            //textBox1.Text = textBox1.Text + @"<img src=""http://www.google-analytics.com/collect?v=1&t=event&tid=UA-92879762-1&cid=0001&ec=email&ea=open5&el=recipient_id&cs=opennewsletter5&cm=email&cn=TK201704/>""/>" + Environment.NewLine;
+            //textBox1.Text = textBox1.Text +  Environment.NewLine;
+            //textBox1.Text = textBox1.Text + @"<img src=""http://www.google-analytics.com/collect?v=1&t=event&tid=" + GAID+ @"&cid=0001&ec=email&ea=" + GAEA + @"&el=recipient_id&cs=" + GACS +@"&cm=email&cn=" + GACN+@"/>""/>" + Environment.NewLine;
+            textBox1.Text = textBox1.Text + @"<img src=""http://www.google-analytics.com/collect?v=1&t=event&tid=" + textBox2.Text + @"&cid=0001&ec=email&ea=" + textBox3.Text + @"&el=recipient_id&cs=" + textBox4.Text + @"&cm=email&cn=" + textBox5.Text + @"/>""/>" + Environment.NewLine;
             textBox1.Text = textBox1.Text + "<a href=http://new.tkfood.com.tw>老楊食品</a>" + Environment.NewLine;
             textBox1.Text = textBox1.Text + "</div><br>" + Environment.NewLine;
             textBox1.Text = textBox1.Text + "</body>" + Environment.NewLine;
             textBox1.Text = textBox1.Text + "</html>" + Environment.NewLine;
         }
 
+        public void SEARCHPRIMEMEMBER()
+        {
+
+        }
+
+        public void SENDPRIMEMEMBEREMAIL()
+        {
+
+        }
 
         #endregion
 
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
-            SERACHCONFIG();
             SENDEMAIL();
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            //content.AppendFormat(" <div>Hello You're from country.</div>");
-            //content.AppendFormat("<a href=http://new.tkfood.com.tw'>老楊食品</a>");
-
-            //string htmlBody = @"<img src=""http://www.google-analytics.com/collect?v=1&t=event&tid=UA-92879762-1&cid=0001&ec=email&ea=open&el=recipient_id&cs=opennewsletter&cm=email&cn=TK201704/>""/>";
-            //string htmlBody = @" < html><body><img src=""http://www.google-analytics.com/collect?v=1&t=event&tid=UA-92879762-1&cid=0001&ec=email&ea=open&el=recipient_id&cs=opennewsletter&cm=email&cn=TK201704/>""/></body></html>";
+            SETBODY();
             content.Clear();
-            //content.AppendFormat("<img src=http://www.google-analytics.com/collect?v=1&t=event&tid=UA-92879762-1&cid=0001&ec=email&ea=open&el=recipient_id&cs=opennewsletter&cm=email&cn=TK201704/>");
-            //content.AppendFormat(htmlBody.ToString());
             content.AppendFormat(textBox1.Text);
             webBrowser1.DocumentText= content.ToString();
             
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SEARCHPRIMEMEMBER();
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            SENDPRIMEMEMBEREMAIL();
         }
         #endregion
 
