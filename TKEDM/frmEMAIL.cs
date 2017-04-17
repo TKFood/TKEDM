@@ -35,7 +35,7 @@ namespace TKEDM
         SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
         SqlTransaction tran;
         SqlCommand cmd = new SqlCommand();
-        DataSet ds = new DataSet();
+        DataSet ds1 = new DataSet();
         DataSet ds2 = new DataSet();
         DataSet ds3 = new DataSet();
         DataTable dt = new DataTable();       
@@ -44,12 +44,69 @@ namespace TKEDM
         Thread TD;
         StringBuilder content = new StringBuilder();
 
+        string SENDMAIL;
+        string SENDNAME;
+        string SMTP;
+        int SMTPPORT;
+        string PASSWORD;
+
         public frmEMAIL()
         {
             InitializeComponent();
             SETBODY();
         }
         #region FUNCTION
+        public void SERACHCONFIG()
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"  SELECT TOP 1 [SENDMAIL],[SENDNAME],[SMTP],[SMTPPORT],[PASSWORD] FROM [TKEDM].[dbo].[CONFIG]  ");              
+                sbSql.AppendFormat(@"  ");
+
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlConn.Open();
+                ds1.Clear();
+                adapter.Fill(ds1, "TEMPds1");
+                sqlConn.Close();
+
+
+                if (ds1.Tables["TEMPds1"].Rows.Count == 0)
+                {
+
+                }
+                else
+                {
+                    if (ds1.Tables["TEMPds1"].Rows.Count >= 1)
+                    {
+                        SENDMAIL=ds1.Tables["TEMPds1"].Rows[0]["SENDMAIL"].ToString();
+                        SENDNAME = ds1.Tables["TEMPds1"].Rows[0]["SENDNAME"].ToString();
+                        SMTP = ds1.Tables["TEMPds1"].Rows[0]["SMTP"].ToString();
+                        SMTPPORT = Convert.ToInt16(ds1.Tables["TEMPds1"].Rows[0]["SMTPPORT"].ToString());
+                        PASSWORD = ds1.Tables["TEMPds1"].Rows[0]["PASSWORD"].ToString();
+
+                    }
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
         public void SENDEMAIL()
         {
             
@@ -61,7 +118,7 @@ namespace TKEDM
 
                 MailAddress receiverAddress = new MailAddress("tk160115@gmail.com", "hi");//<-這物件只是用來設定郵件帳號而已~
                 //MailAddress receiverAddress = new MailAddress("tk290@tkfood.com.tw", "t1");//<-這物件只是用來設定郵件帳號而已~
-                MailAddress senderAddress = new MailAddress("aurora@tkfood.com.tw", "老楊食品");               
+                MailAddress senderAddress = new MailAddress(SENDMAIL, SENDNAME);               
                 MailMessage mail = new MailMessage(senderAddress, receiverAddress);//<-這物件是郵件訊息的部分~需設定寄件人跟收件人~可直接打郵件帳號也可以使用MailAddress物件~
 
                 mail.Priority = MailPriority.Normal;
@@ -74,11 +131,11 @@ namespace TKEDM
              
 
 
-                SmtpClient MySmtp = new SmtpClient("officemail.cloudmax.com.tw", 25); //允許程式使用smtp來發mail，並設定smtp server & port
+                SmtpClient MySmtp = new SmtpClient(SMTP, SMTPPORT); //允許程式使用smtp來發mail，並設定smtp server & port
                 MySmtp.EnableSsl = false; //開啟SSL連線 (gmail體系須使用SSL連線)
                 MySmtp.UseDefaultCredentials = true;
                 //ps=tkmail413
-                MySmtp.Credentials = new NetworkCredential("aurora@tkfood.com.tw", ""); //設定帳號與密碼 需要using system.net;
+                MySmtp.Credentials = new NetworkCredential(SENDMAIL, PASSWORD); //設定帳號與密碼 需要using system.net;
                 
                
                 MySmtp.Send(mail);
@@ -114,6 +171,7 @@ namespace TKEDM
         #region BUTTON
         private void button1_Click(object sender, EventArgs e)
         {
+            SERACHCONFIG();
             SENDEMAIL();
         }
         private void button2_Click(object sender, EventArgs e)
