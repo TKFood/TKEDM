@@ -74,10 +74,10 @@ namespace TKEDM
              
 
 
-                SmtpClient MySmtp = new SmtpClient("mail.tkfood.com.tw", 25); //允許程式使用smtp來發mail，並設定smtp server & port
+                SmtpClient MySmtp = new SmtpClient("officemail.cloudmax.com.tw", 25); //允許程式使用smtp來發mail，並設定smtp server & port
                 MySmtp.EnableSsl = false; //開啟SSL連線 (gmail體系須使用SSL連線)
                 MySmtp.UseDefaultCredentials = true;
-                MySmtp.Credentials = new NetworkCredential("aurora@tkfood.com.tw", "@@Tkmailar327"); //設定帳號與密碼 需要using system.net;
+                MySmtp.Credentials = new NetworkCredential("aurora@tkfood.com.tw", "tkmail413"); //設定帳號與密碼 需要using system.net;
                 
                
                 MySmtp.Send(mail);
