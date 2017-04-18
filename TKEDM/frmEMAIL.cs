@@ -297,12 +297,17 @@ namespace TKEDM
                 EMAIL = DSMAIL.Tables[0].Rows[i]["EMAIL"].ToString();
                 if (!string.IsNullOrEmpty(EMAIL))
                 {
-
-                    MessageBox.Show(EMAIL);
+                    SETPRIMEMEMBEREBODY(DSMAIL.Tables[0].Rows[i]["NAME"].ToString());
+                    //MessageBox.Show(EMAIL);
                 }
             }
             
             
+        }
+
+        public void SETPRIMEMEMBEREBODY(string NAME)
+        {
+
         }
 
         #endregion
