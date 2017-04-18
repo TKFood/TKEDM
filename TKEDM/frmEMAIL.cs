@@ -176,11 +176,9 @@ namespace TKEDM
             }
         }
         public void SENDEMAIL()
-        {
-            
+        {            
             try
             {
-
                 content.Clear();
                 content.AppendFormat(textBox1.Text);
 
@@ -195,9 +193,7 @@ namespace TKEDM
                 mail.IsBodyHtml = true;//<-如果要這封郵件吃html的話~這屬性就把他設為true~~
 
                 //Attachment attachment = new Attachment(@"");//<-這是附件部分~先用附件的物件把路徑指定進去~
-                //mail.Attachments.Add(attachment);//<-郵件訊息中加入附件
-             
-
+                //mail.Attachments.Add(attachment);//<-郵件訊息中加入附件 
 
                 SmtpClient MySmtp = new SmtpClient(SMTP, SMTPPORT); //允許程式使用smtp來發mail，並設定smtp server & port
                 MySmtp.EnableSsl = false; //開啟SSL連線 (gmail體系須使用SSL連線)
@@ -286,30 +282,84 @@ namespace TKEDM
                 sqlConn.Close();
             }
         }
-
- 
-        public void SENDPRIMEMEMBEREMAIL()
+        public void SENDPRIMEMEMBERE()
         {
             DataSet DSMAIL = ds3;
             string EMAIL;
-            for (int i=0;i< DSMAIL.Tables[0].Rows.Count;i++)
+            for (int i = 0; i < DSMAIL.Tables[0].Rows.Count; i++)
             {
+                Thread.Sleep(1000);   ////暫停程式一秒
+
                 EMAIL = DSMAIL.Tables[0].Rows[i]["EMAIL"].ToString();
                 if (!string.IsNullOrEmpty(EMAIL))
                 {
                     SETPRIMEMEMBEREBODY(DSMAIL.Tables[0].Rows[i]["NAME"].ToString());
+                    SENDPRIMEMEMBEREMAIL(EMAIL);
                     //MessageBox.Show(EMAIL);
                 }
             }
             
-            
         }
+
+      
 
         public void SETPRIMEMEMBEREBODY(string NAME)
         {
+            string PRIMEMEMBEREBODY;
 
+            PRIMEMEMBEREBODY = "<html>" + Environment.NewLine;
+            PRIMEMEMBEREBODY = PRIMEMEMBEREBODY + "<body>" + Environment.NewLine;
+            PRIMEMEMBEREBODY = PRIMEMEMBEREBODY + "<div>Hello " + NAME + Environment.NewLine;
+            PRIMEMEMBEREBODY = PRIMEMEMBEREBODY + @"<img src=""http://www.google-analytics.com/collect?v=1&t=event&tid=" + textBox2.Text + @"&cid=0001&ec=email&ea=" + textBox3.Text + @"&el=recipient_id&cs=" + textBox4.Text + @"&cm=email&cn=" + textBox5.Text + @"/>""/>" + Environment.NewLine;
+            PRIMEMEMBEREBODY = PRIMEMEMBEREBODY + "<a href=http://new.tkfood.com.tw>老楊食品</a>" + Environment.NewLine;
+            PRIMEMEMBEREBODY = PRIMEMEMBEREBODY + "</div><br>" + Environment.NewLine;
+            PRIMEMEMBEREBODY = PRIMEMEMBEREBODY + "</body>" + Environment.NewLine;
+            PRIMEMEMBEREBODY = PRIMEMEMBEREBODY + "</html>" + Environment.NewLine;
+
+            content.Clear();
+            content.AppendFormat(PRIMEMEMBEREBODY);
         }
 
+        public void SENDPRIMEMEMBEREMAIL(string EMAIL)
+        {
+            try
+            {              
+
+                MailAddress receiverAddress = new MailAddress(EMAIL, "hi");//<-這物件只是用來設定郵件帳號而已~
+                //MailAddress receiverAddress = new MailAddress("tk290@tkfood.com.tw", "t1");//<-這物件只是用來設定郵件帳號而已~
+                MailAddress senderAddress = new MailAddress(SENDMAIL, SENDNAME);
+                MailMessage mail = new MailMessage(senderAddress, receiverAddress);//<-這物件是郵件訊息的部分~需設定寄件人跟收件人~可直接打郵件帳號也可以使用MailAddress物件~
+
+                mail.Priority = MailPriority.Normal;
+                mail.Subject = "老楊食品";
+                mail.Body = content.ToString();
+                mail.IsBodyHtml = true;//<-如果要這封郵件吃html的話~這屬性就把他設為true~~
+
+                //Attachment attachment = new Attachment(@"");//<-這是附件部分~先用附件的物件把路徑指定進去~
+                //mail.Attachments.Add(attachment);//<-郵件訊息中加入附件 
+
+                SmtpClient MySmtp = new SmtpClient(SMTP, SMTPPORT); //允許程式使用smtp來發mail，並設定smtp server & port
+                MySmtp.EnableSsl = false; //開啟SSL連線 (gmail體系須使用SSL連線)
+                MySmtp.UseDefaultCredentials = true;
+                //ps=tkmail413
+                MySmtp.Credentials = new NetworkCredential(SENDMAIL, PASSWORD); //設定帳號與密碼 需要using system.net;
+
+
+                MySmtp.Send(mail);
+
+                MySmtp = null; //將MySmtp清空
+                mail.Dispose(); //釋放資源
+
+                MessageBox.Show("OK");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            Console.ReadLine();
+
+
+        }
         #endregion
 
         #region BUTTON
@@ -334,12 +384,7 @@ namespace TKEDM
         {
             SENDPRIMEMEMBERE();
         }
-        public void SENDPRIMEMEMBERE()
-        {
-            content.Clear();
-            content.AppendFormat(textBox1.Text);
-            SENDPRIMEMEMBEREMAIL();
-        }
+       
         #endregion
 
 
