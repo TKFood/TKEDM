@@ -33,6 +33,10 @@ namespace TKEDM
         StringBuilder sbSqlQuery = new StringBuilder();
         SqlDataAdapter adapter = new SqlDataAdapter();
         SqlCommandBuilder sqlCmdBuilder = new SqlCommandBuilder();
+        SqlDataAdapter adapter2 = new SqlDataAdapter();
+        SqlCommandBuilder sqlCmdBuilder2 = new SqlCommandBuilder();
+        SqlDataAdapter adapter3 = new SqlDataAdapter();
+        SqlCommandBuilder sqlCmdBuilder3 = new SqlCommandBuilder();
         SqlTransaction tran;
         SqlCommand cmd = new SqlCommand();
         DataSet ds1 = new DataSet();
@@ -133,12 +137,12 @@ namespace TKEDM
                 sbSql.AppendFormat(@"  ");
 
 
-                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+                adapter2 = new SqlDataAdapter(@"" + sbSql, sqlConn);
 
-                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+                sqlCmdBuilder2 = new SqlCommandBuilder(adapter2);
                 sqlConn.Open();
                 ds2.Clear();
-                adapter.Fill(ds2, "TEMPds2");
+                adapter2.Fill(ds2, "TEMPds2");
                 sqlConn.Close();
 
 
@@ -234,7 +238,53 @@ namespace TKEDM
 
         public void SEARCHPRIMEMEMBER()
         {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dberp"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
 
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+
+
+                sbSql.AppendFormat(@"  SELECT [ID],[NAME],[SEX],[BIRTHDAT],[EMAIL]  ");
+                sbSql.AppendFormat(@"  FROM [TKEDM].[dbo].[PRIMEMEMBER] ");
+                sbSql.AppendFormat(@"  WHERE [SEX]='{0}'",comboBox1.Text);
+                sbSql.AppendFormat(@"  AND DATEDIFF (YEAR,[BIRTHDAT],GETDATE()) >={0} AND DATEDIFF (YEAR,[BIRTHDAT],GETDATE()) <={1}",numericUpDown1.Value.ToString(),numericUpDown2.Value.ToString());
+                sbSql.AppendFormat(@"  ");
+
+
+                adapter3 = new SqlDataAdapter(@"" + sbSql, sqlConn);
+
+                sqlCmdBuilder3 = new SqlCommandBuilder(adapter3);
+                sqlConn.Open();
+                ds3.Clear();
+                adapter3.Fill(ds3, "TEMPds3");
+                sqlConn.Close();
+
+
+                if (ds3.Tables["TEMPds3"].Rows.Count == 0)
+                {
+
+                }
+                else
+                {
+                    if (ds3.Tables["TEMPds3"].Rows.Count >= 1)
+                    {
+                        dataGridView1.DataSource = ds3.Tables["TEMPds3"];
+                        dataGridView1.AutoResizeColumns();
+                    }
+                }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
         }
 
         public void SENDPRIMEMEMBEREMAIL()
