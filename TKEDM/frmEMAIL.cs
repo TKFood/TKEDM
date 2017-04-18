@@ -287,9 +287,22 @@ namespace TKEDM
             }
         }
 
+ 
         public void SENDPRIMEMEMBEREMAIL()
         {
+            DataSet DSMAIL = ds3;
+            string EMAIL;
+            for (int i=0;i< DSMAIL.Tables[0].Rows.Count;i++)
+            {
+                EMAIL = DSMAIL.Tables[0].Rows[i]["EMAIL"].ToString();
+                if (!string.IsNullOrEmpty(EMAIL))
+                {
 
+                    MessageBox.Show(EMAIL);
+                }
+            }
+            
+            
         }
 
         #endregion
@@ -314,6 +327,12 @@ namespace TKEDM
         }
         private void button4_Click(object sender, EventArgs e)
         {
+            SENDPRIMEMEMBERE();
+        }
+        public void SENDPRIMEMEMBERE()
+        {
+            content.Clear();
+            content.AppendFormat(textBox1.Text);
             SENDPRIMEMEMBEREMAIL();
         }
         #endregion
